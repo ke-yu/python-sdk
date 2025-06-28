@@ -116,14 +116,12 @@ def create_resource_server(settings: ResourceServerSettings) -> FastMCP:
     type=click.Choice(["sse", "streamable-http"]),
     help="Transport protocol to use ('sse' or 'streamable-http')",
 )
-@click.option("--client_id", help="OAuth2 Client ID")
-@click.option("--client_secret", help="OAuth2 Client secret")
 @click.option(
     "--oauth-strict",
     is_flag=True,
     help="Enable RFC 8707 resource validation",
 )
-def main(port: int, auth_server: str, transport: Literal["sse", "streamable-http"], client_id: str, client_secret: str, oauth_strict: bool) -> int:
+def main(port: int, auth_server: str, transport: Literal["sse", "streamable-http"], oauth_strict: bool) -> int:
     """
     Run the MCP Resource Server.
 
@@ -149,8 +147,6 @@ def main(port: int, auth_server: str, transport: Literal["sse", "streamable-http
             server_url=AnyHttpUrl(server_url),
             auth_server_url=auth_server_url,
             auth_server_jwks_endpoint=f"{auth_server}/authentication/v2/keys",
-            client_id=client_id,
-            client_secret=client_secret,
             oauth_strict=oauth_strict
         )
     except ValueError as e:
