@@ -34,6 +34,7 @@ class InMemoryTokenStorage(TokenStorage):
         return self._tokens
 
     async def set_tokens(self, tokens: OAuthToken) -> None:
+        print(f">>>>>>oauth token={tokens}")
         self._tokens = tokens
 
     async def get_client_info(self) -> OAuthClientInformationFull | None:
@@ -160,6 +161,29 @@ class SimpleAuthClient:
         print(f"🔗 Attempting to connect to {self.server_url}...")
 
         try:
+            storage = InMemoryTokenStorage()
+
+            client_id = os.getenv("MCP_CLIENT_ID")
+            client_secret = os.getenv("MCP_CLIENT_SECRET")
+
+            client_metadata_dict = {
+                "client_name": "Simple Auth Client",
+                "redirect_uris": ["http://localhost:3030/callback"],
+                "grant_types": ["authorization_code", "refresh_token"],
+                "response_types": ["code"],
+                "token_endpoint_auth_method": "client_secret_post",
+            }
+            client_metadata = OAuthClientMetadata.model_validate(client_metadata_dict)
+
+            if client_id:
+                print("Found pre-configured client ID. Skipping dynamic registration.")
+                client_info = OAuthClientInformationFull(
+                    client_id=client_id,
+                    client_secret=client_secret,
+                    **client_metadata.model_dump(),
+                )
+                await storage.set_client_info(client_info)
+
             callback_server = CallbackServer(port=3030)
             callback_server.start()
 
@@ -172,14 +196,6 @@ class SimpleAuthClient:
                 finally:
                     callback_server.stop()
 
-            client_metadata_dict = {
-                "client_name": "Simple Auth Client",
-                "redirect_uris": ["http://localhost:3030/callback"],
-                "grant_types": ["authorization_code", "refresh_token"],
-                "response_types": ["code"],
-                "token_endpoint_auth_method": "client_secret_post",
-            }
-
             async def _default_redirect_handler(authorization_url: str) -> None:
                 """Default redirect handler that opens the URL in a browser."""
                 print(f"Opening browser for authorization: {authorization_url}")
@@ -188,10 +204,8 @@ class SimpleAuthClient:
             # Create OAuth authentication handler using the new interface
             oauth_auth = OAuthClientProvider(
                 server_url=self.server_url.replace("/mcp", ""),
-                client_metadata=OAuthClientMetadata.model_validate(
-                    client_metadata_dict
-                ),
-                storage=InMemoryTokenStorage(),
+                client_metadata=client_metadata,
+                storage=storage,
                 redirect_handler=_default_redirect_handler,
                 callback_handler=callback_handler,
             )
