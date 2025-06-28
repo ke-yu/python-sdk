@@ -36,6 +36,8 @@ uv run mcp-simple-auth-rs --port=8001 --auth-server=http://localhost:9000  --tra
 # With RFC 8707 strict resource validation (recommended for production)
 uv run mcp-simple-auth-rs --port=8001 --auth-server=http://localhost:9000  --transport=streamable-http --oauth-strict
 
+# With client id and client secret
+uv run mcp-simple-auth-rs --port=8001 --auth-server=http://localhost:9000  --transport=streamable-http --oauth-strict --client_id=<client_ID> --client_secret=<client_secret>
 ```
 
 
