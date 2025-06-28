@@ -19,7 +19,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from mcp.server.auth.settings import AuthSettings
 from mcp.server.fastmcp.server import FastMCP
 
-from .token_verifier import IntrospectionTokenVerifier
+from .token_verifier import LocalTokenVerifier 
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +37,7 @@ class ResourceServerSettings(BaseSettings):
     # Authorization Server settings
     auth_server_url: AnyHttpUrl = AnyHttpUrl("http://localhost:9000")
     auth_server_introspection_endpoint: str = "http://localhost:9000/introspect"
+    auth_server_jwks_endpoint: str = "http://localhost:9000/keys"
     # No user endpoint needed - we get user data from token introspection
 
     # MCP settings
@@ -62,12 +63,10 @@ def create_resource_server(settings: ResourceServerSettings) -> FastMCP:
     2. Validates tokens via Authorization Server introspection
     3. Serves MCP tools and resources
     """
-    # Create token verifier for introspection with RFC 8707 resource validation
-    token_verifier = IntrospectionTokenVerifier(
-        introspection_endpoint=settings.auth_server_introspection_endpoint,
+    # create a local token verifier
+    token_verifier = LocalTokenVerifier(
+        jwks_endpoint=settings.auth_server_jwks_endpoint,
         server_url=str(settings.server_url),
-        client_id=settings.client_id,
-        client_secret=settings.client_secret,
         validate_resource=settings.oauth_strict  # Only validate when --oauth-strict is set
     )
 
@@ -149,7 +148,7 @@ def main(port: int, auth_server: str, transport: Literal["sse", "streamable-http
             port=port,
             server_url=AnyHttpUrl(server_url),
             auth_server_url=auth_server_url,
-            auth_server_introspection_endpoint=f"{auth_server}/authentication/v2/introspect",
+            auth_server_jwks_endpoint=f"{auth_server}/authentication/v2/keys",
             client_id=client_id,
             client_secret=client_secret,
             oauth_strict=oauth_strict
