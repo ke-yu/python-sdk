@@ -41,7 +41,7 @@ class ResourceServerSettings(BaseSettings):
     # No user endpoint needed - we get user data from token introspection
 
     # MCP settings
-    mcp_scope: str = "user"
+    mcp_scope: str = "data:read"
 
     client_id: str = ""
     client_secret: str = ""
