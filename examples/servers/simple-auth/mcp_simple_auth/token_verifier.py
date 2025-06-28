@@ -1,6 +1,7 @@
 """Example token verifier implementation using OAuth 2.0 Token Introspection (RFC 7662)."""
 
 import logging
+import base64
 
 from mcp.server.auth.provider import AccessToken, TokenVerifier
 from mcp.shared.auth_utils import check_resource_allowed, resource_url_from_server_url
@@ -23,10 +24,14 @@ class IntrospectionTokenVerifier(TokenVerifier):
         self,
         introspection_endpoint: str,
         server_url: str,
+        client_id: str,
+        client_secret: str,
         validate_resource: bool = False,
     ):
         self.introspection_endpoint = introspection_endpoint
         self.server_url = server_url
+        self.client_id = client_id
+        self.client_secret = client_secret
         self.validate_resource = validate_resource
         self.resource_url = resource_url_from_server_url(server_url)
 
@@ -49,10 +54,11 @@ class IntrospectionTokenVerifier(TokenVerifier):
             verify=True,  # Enforce SSL verification
         ) as client:
             try:
+                credentials = base64.b64encode(f'{self.client_id}:{self.client_secret}'.encode()).decode('utf-8')
                 response = await client.post(
                     self.introspection_endpoint,
                     data={"token": token},
-                    headers={"Content-Type": "application/x-www-form-urlencoded"},
+                    headers={"Content-Type": "application/x-www-form-urlencoded", "Authorization": f"Basic {credentials}"},
                 )
 
                 if response.status_code != 200:

@@ -42,6 +42,9 @@ class ResourceServerSettings(BaseSettings):
     # MCP settings
     mcp_scope: str = "user"
 
+    client_id: str = ""
+    client_secret: str = ""
+    
     # RFC 8707 resource validation
     oauth_strict: bool = False
 
@@ -63,7 +66,9 @@ def create_resource_server(settings: ResourceServerSettings) -> FastMCP:
     token_verifier = IntrospectionTokenVerifier(
         introspection_endpoint=settings.auth_server_introspection_endpoint,
         server_url=str(settings.server_url),
-        validate_resource=settings.oauth_strict,  # Only validate when --oauth-strict is set
+        client_id=settings.client_id,
+        client_secret=settings.client_secret,
+        validate_resource=settings.oauth_strict  # Only validate when --oauth-strict is set
     )
 
     # Create FastMCP server as a Resource Server
@@ -112,12 +117,14 @@ def create_resource_server(settings: ResourceServerSettings) -> FastMCP:
     type=click.Choice(["sse", "streamable-http"]),
     help="Transport protocol to use ('sse' or 'streamable-http')",
 )
+@click.option("--client_id", help="OAuth2 Client ID")
+@click.option("--client_secret", help="OAuth2 Client secret")
 @click.option(
     "--oauth-strict",
     is_flag=True,
     help="Enable RFC 8707 resource validation",
 )
-def main(port: int, auth_server: str, transport: Literal["sse", "streamable-http"], oauth_strict: bool) -> int:
+def main(port: int, auth_server: str, transport: Literal["sse", "streamable-http"], client_id: str, client_secret: str, oauth_strict: bool) -> int:
     """
     Run the MCP Resource Server.
 
@@ -142,8 +149,10 @@ def main(port: int, auth_server: str, transport: Literal["sse", "streamable-http
             port=port,
             server_url=AnyHttpUrl(server_url),
             auth_server_url=auth_server_url,
-            auth_server_introspection_endpoint=f"{auth_server}/introspect",
-            oauth_strict=oauth_strict,
+            auth_server_introspection_endpoint=f"{auth_server}/authentication/v2/introspect",
+            client_id=client_id,
+            client_secret=client_secret,
+            oauth_strict=oauth_strict
         )
     except ValueError as e:
         logger.error(f"Configuration error: {e}")
