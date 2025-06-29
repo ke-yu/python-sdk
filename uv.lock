@@ -281,6 +281,27 @@ wheels = [
 ]
 
 [[package]]
+name = "cryptography"
+version = "41.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cffi" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/bf/92/3301a5d4fb734290a8bca5a9aad61ea61327ed53cb19be110d4f3548df76/cryptography-41.0.0.tar.gz", hash = "sha256:6b71f64beeea341c9b4f963b48ee3b62d62d57ba93eb120e1196b31dc1025e78", size = 628254, upload-time = "2023-05-30T21:47:56.594Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e4/31/06d6c33f93165c0fc80008fdeab4543b1ce7ceebcc2cf66da70e5e1daaad/cryptography-41.0.0-cp37-abi3-macosx_10_12_universal2.whl", hash = "sha256:3c5ef25d060c80d6d9f7f9892e1d41bb1c79b78ce74805b8cb4aa373cb7d5ec8", size = 5315010, upload-time = "2023-05-30T21:47:16.76Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/60/e02e88f973fcf2366008d1e0b62e9ef6e432e00d6edae0e47371fe624ccb/cryptography-41.0.0-cp37-abi3-macosx_10_12_x86_64.whl", hash = "sha256:8362565b3835ceacf4dc8f3b56471a2289cf51ac80946f9087e66dc283a810e0", size = 2829238, upload-time = "2023-05-30T21:47:38.055Z" },
+    { url = "https://files.pythonhosted.org/packages/5b/97/1096bb43ff0f9f40a6a04fc26fe209b2991805257a2c2e32f1076201f2dd/cryptography-41.0.0-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3680248309d340fda9611498a5319b0193a8dbdb73586a1acf8109d06f25b92d", size = 4080931, upload-time = "2023-05-30T21:46:53.773Z" },
+    { url = "https://files.pythonhosted.org/packages/76/94/e5b948856427b66575e194764e54bb43669e7764396868d015f1e40b5e3a/cryptography-41.0.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:84a165379cb9d411d58ed739e4af3396e544eac190805a54ba2e0322feb55c46", size = 4299395, upload-time = "2023-05-30T21:47:34.892Z" },
+    { url = "https://files.pythonhosted.org/packages/a3/90/182588b47bbe52438193d93a9901d0dddfe25b7abdc25196473f896e63e3/cryptography-41.0.0-cp37-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:4ab14d567f7bbe7f1cdff1c53d5324ed4d3fc8bd17c481b395db224fb405c237", size = 4069007, upload-time = "2023-05-30T21:47:29.977Z" },
+    { url = "https://files.pythonhosted.org/packages/92/b6/22b9b21fecfb03a90ce9393053f054b2742b00e704c20a595cf4c15f975e/cryptography-41.0.0-cp37-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:9f65e842cb02550fac96536edb1d17f24c0a338fd84eaf582be25926e993dde4", size = 4307626, upload-time = "2023-05-30T21:47:03.438Z" },
+    { url = "https://files.pythonhosted.org/packages/f7/a3/83dc953152063db9d7a2d3349d913576fc672b71523581ddb0faa6af22bc/cryptography-41.0.0-cp37-abi3-musllinux_1_1_aarch64.whl", hash = "sha256:b7f2f5c525a642cecad24ee8670443ba27ac1fab81bba4cc24c7b6b41f2d0c75", size = 4178249, upload-time = "2023-05-30T21:47:01.017Z" },
+    { url = "https://files.pythonhosted.org/packages/67/da/096e2074dee14fa5793ed60a39efcab0d9851a67859bf468b1862d53e35a/cryptography-41.0.0-cp37-abi3-musllinux_1_1_x86_64.whl", hash = "sha256:7d92f0248d38faa411d17f4107fc0bce0c42cae0b0ba5415505df72d751bf62d", size = 4377029, upload-time = "2023-05-30T21:47:06.101Z" },
+    { url = "https://files.pythonhosted.org/packages/9b/00/1cb49039236a71b9c8511ec3ba7d5153c22b022d67518499f34dcafc8c2e/cryptography-41.0.0-cp37-abi3-win32.whl", hash = "sha256:34d405ea69a8b34566ba3dfb0521379b210ea5d560fafedf9f800a9a94a41928", size = 2209044, upload-time = "2023-05-30T21:46:56.371Z" },
+    { url = "https://files.pythonhosted.org/packages/ab/40/bb01066d306329d3f0e440c5e9863f08d29e783c827ce74a823889d56977/cryptography-41.0.0-cp37-abi3-win_amd64.whl", hash = "sha256:344c6de9f8bda3c425b3a41b319522ba3208551b70c2ae00099c205f0d9fd3be", size = 2640813, upload-time = "2023-05-30T21:47:20.142Z" },
+]
+
+[[package]]
 name = "cssselect2"
 version = "0.8.0"
 source = { registry = "https://pypi.org/simple" }
@@ -644,10 +665,12 @@ source = { editable = "examples/servers/simple-auth" }
 dependencies = [
     { name = "anyio" },
     { name = "click" },
+    { name = "cryptography" },
     { name = "httpx" },
     { name = "mcp" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
+    { name = "pyjwt" },
     { name = "sse-starlette" },
     { name = "uvicorn", marker = "sys_platform != 'emscripten'" },
 ]
@@ -663,10 +686,12 @@ dev = [
 requires-dist = [
     { name = "anyio", specifier = ">=4.5" },
     { name = "click", specifier = ">=8.1.0" },
+    { name = "cryptography", specifier = ">=41.0.0" },
     { name = "httpx", specifier = ">=0.27" },
     { name = "mcp", editable = "." },
     { name = "pydantic", specifier = ">=2.0" },
     { name = "pydantic-settings", specifier = ">=2.5.2" },
+    { name = "pyjwt", specifier = ">=2.8.0" },
     { name = "sse-starlette", specifier = ">=1.6.1" },
     { name = "uvicorn", marker = "sys_platform != 'emscripten'", specifier = ">=0.23.1" },
 ]
@@ -1250,6 +1275,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz", hash = "sha256:786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199", size = 4891905, upload-time = "2024-05-04T13:42:02.013Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f7/3f/01c8b82017c199075f8f788d0d906b9ffbbc5a47dc9918a945e13d5a2bda/pygments-2.18.0-py3-none-any.whl", hash = "sha256:b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a", size = 1205513, upload-time = "2024-05-04T13:41:57.345Z" },
+]
+
+[[package]]
+name = "pyjwt"
+version = "2.8.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/30/72/8259b2bccfe4673330cea843ab23f86858a419d8f1493f66d413a76c7e3b/PyJWT-2.8.0.tar.gz", hash = "sha256:57e28d156e3d5c10088e0c68abb90bfac3df82b40a71bd0daa20c65ccd5c23de", size = 78313, upload-time = "2023-07-18T20:02:22.594Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2b/4f/e04a8067c7c96c364cef7ef73906504e2f40d690811c021e1a1901473a19/PyJWT-2.8.0-py3-none-any.whl", hash = "sha256:59127c392cc44c2da5bb3192169a91f429924e17aff6534d70fdc02ab3e04320", size = 22591, upload-time = "2023-07-18T20:02:21.561Z" },
 ]
 
 [[package]]
